@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 27ed2c4cfe85bbc5bd0e9ba43e1a8ce8bfc47b8e
 =======
 >>>>>>> 27ed2c4cfe85bbc5bd0e9ba43e1a8ce8bfc47b8e
 import javafx.application.Application;
@@ -29,11 +32,17 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.paint.Color;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 27ed2c4cfe85bbc5bd0e9ba43e1a8ce8bfc47b8e
 
 
 
 
+<<<<<<< HEAD
+>>>>>>> 27ed2c4cfe85bbc5bd0e9ba43e1a8ce8bfc47b8e
+=======
 >>>>>>> 27ed2c4cfe85bbc5bd0e9ba43e1a8ce8bfc47b8e
 public class Main extends Application {
 
