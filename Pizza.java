@@ -143,7 +143,7 @@ public class Pizza extends Application {
                 newGridP.grid.add(receiptPanel,2,2);
                 GridPane.setRowSpan(receiptPanel,5);
                 GridPane.setColumnSpan(receiptPanel,5);
-                newGridP.grid.setGridLinesVisible(true);
+                newGridP.grid.setGridLinesVisible(false);
 
 
                 newGridP.gridInGrid.add(topBtns.pizzaCost,0,13);
