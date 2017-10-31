@@ -31,7 +31,7 @@ public class Grid {
 
 
     
-    public void createGrid1(){
+    public GridPane createGrid1(){
     //method that creates initial gridpane
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(25);
@@ -56,15 +56,18 @@ public class Grid {
         grid.add(button, 2, 0, 1, 1);
         grid.add(label2, 0, 1, 2, 2);
         //adds labels,etc to grid at specific coordinates
-        grid.setPadding(new Insets(50, 50, 50, 50)); //(top/right/bottom/left)
+        grid.setPadding(new Insets(10, 50, 10, 10)); //(top/right/bottom/left)
 
         flowPane.setPadding(new Insets(10, 10, 10, 10));
         flowPane.setVgap(10);
         flowPane.setHgap(10);
         flowPane.setPrefWrapLength(210);
 
-
+        return grid;
         
+    }
+    public GridPane getGrid1(){
+        return grid;
     }
 
     public void createGrid2(){
@@ -81,7 +84,7 @@ public void innerGrid(){
         grid.add(gridInGrid,4,3); 
         GridPane.setRowSpan(gridInGrid,3);
         
-                        //newGridP.gridInGrid.add(topBtns.pizzaCost,0,13);
+                        //newGrid.createGrid1().InGrid.add(topBtns.pizzaCost,0,13);
 
         //gridInGrid.setGridLinesVisible(true);
 }
