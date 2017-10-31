@@ -10,6 +10,9 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.control.ComboBox;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+
 
 
 public class Grid {
@@ -75,8 +78,8 @@ public void innerGrid(){
             gridInGrid.getRowConstraints().add(row);
         }
 
-        grid.add(gridInGrid,4,4); 
-        GridPane.setRowSpan(gridInGrid,5);
+        grid.add(gridInGrid,4,3); 
+        GridPane.setRowSpan(gridInGrid,3);
         
                         //newGridP.gridInGrid.add(topBtns.pizzaCost,0,13);
 
@@ -107,7 +110,7 @@ public void innerGrid(){
         ccAddr2TF.setPrefWidth(300);       
         Label ccCity = new Label("City:");
         TextField ccCityTF= new TextField (); 
-        ccCityTF.setMaxWidth(35);       
+        ccCityTF.setMaxWidth(100);       
         Label ccState = new Label("State:");
         TextField ccStateTF= new TextField (); 
         ccStateTF.setMaxWidth(45);       
@@ -117,13 +120,12 @@ public void innerGrid(){
         Button button = new Button("Lookup");
 
         ComboBox cbCC = new ComboBox();
-        cbCC.getItems().addAll("American Express","Discover","Master Card,","Visa");
+        cbCC.getItems().addAll("American Express","Discover","Master Card","Visa");
         ComboBox cbExpMonth = new ComboBox();
-        cbExpMonth.getItems().addAll("January","February","March,","April","May","June","July","August","September","October","November","December");
+        cbExpMonth.getItems().addAll("January","February","March","April","May","June","July","August","September","October","November","December");
         ComboBox cbExpYear = new ComboBox();
-        cbExpYear.getItems().addAll("2017","2018","2019,","2020","2021","2022","2023","2024","2025");
+        cbExpYear.getItems().addAll("2017","2018","2019","2020","2021","2022","2023","2024","2025");
         
-        //cardFlow.getChildren().addAll(ccLabel,ccnLabel,ccnTF,ccNameLabel,ccNameTF,ccExpiration,ccSecCode,ccSecCodeTF,ccAddress1,ccAddr1TF,ccAddress2,ccAddr2TF,ccCity,ccCityTF,ccState,ccStateTF,ccZip,ccZipTF);
         cardFlow.add(ccLabel,0,0);
         cardFlow.add(cbCC,1,0);
         cardFlow.add(ccnLabel,0,1);
@@ -131,6 +133,9 @@ public void innerGrid(){
         cardFlow.add(ccNameLabel,0,2);
         cardFlow.add(ccNameTF,1,2);
         cardFlow.add(ccExpiration,0,3);
+        cardFlow.add(cbExpMonth,1,3);
+        cardFlow.add(cbExpYear,1,3);
+        GridPane.setHalignment(cbExpYear, HPos.CENTER);
         cardFlow.add(ccSecCode,0,4);
         cardFlow.add(ccSecCodeTF,1,4);
         cardFlow.add(ccAddress1,0,5);

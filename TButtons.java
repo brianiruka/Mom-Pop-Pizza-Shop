@@ -195,7 +195,6 @@ public class TButtons {
                         VBox vbox = new VBox(mozzarella,cheddar,shreddedParm,noCheese,okButton);
                         vbox.setAlignment(Pos.TOP_LEFT);
                         vbox.setPadding(new Insets(15));
-                        System.out.println(rCheese.getBoundsInParent());
                         
                         cheeseStage.setScene(new Scene(vbox));
                         cheeseStage.show();
@@ -242,7 +241,6 @@ public class TButtons {
                             extraMeat.setText("");
                             extraMeat2.setText("");
                             extraMeat3.setText("");
-                            
                             if (toppingCounter>1){
                                 extraMeat.setText("+$0.50");
                                 GridPane.setRowIndex(extraMeat,37);
