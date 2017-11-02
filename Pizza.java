@@ -31,7 +31,6 @@ public class Pizza extends Application {
         borderPane.prefWidthProperty().bind(scene1.widthProperty());
         root.getChildren().add(borderPane);
 
-
         //initialize tabbed scene
         primaryStage.setScene(scene1);
         primaryStage.show();
