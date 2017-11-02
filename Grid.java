@@ -14,7 +14,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 
 
-
 public class Grid {
 
     GridPane grid= new GridPane();    
@@ -27,6 +26,21 @@ public class Grid {
     GridPane cardFlow = new GridPane();
     FlowPane cashFlow = new FlowPane();
     FlowPane checkFlow = new FlowPane();
+    Label ccLabel = new Label("Credit Card:");
+    Label nameLabel = new Label("Name:");
+    TextField nameTF = new TextField ();         
+    Label ccAddress1 = new Label("Address (line 1):");
+    TextField ccAddr1TF= new TextField ();      
+    Label ccAddress2 = new Label("Address (line 2):");
+    TextField ccAddr2TF= new TextField (); 
+    Label ccCity = new Label("City:");
+    TextField ccCityTF= new TextField (); 
+    Label ccState = new Label("State:");
+    TextField ccStateTF= new TextField (); 
+    Label ccZip = new Label("Zipcode:");
+    TextField ccZipTF= new TextField();
+    ComboBox cbCC = new ComboBox();
+
     
 
 
@@ -42,16 +56,16 @@ public class Grid {
         grid.getColumnConstraints().addAll(col1,col2,col3);
         //sets column dimensions
         grid.setHgap(10);
-        grid.setVgap(10);
-
+        grid.setVgap(20);
 
         button.setOnAction((event) -> {
         label2.setText("[Customer info will be displayed here from database]");
+        
         //when lookup button clicked
         label2.setTextFill(Color.web("#0076a3"));
 
         });
-        grid.add(label1, 0, 0, 1, 1);
+        grid.add(label1, 0, 0, 1, 2);
         grid.add(textField, 1, 0, 1, 1);
         grid.add(button, 2, 0, 1, 1);
         grid.add(label2, 0, 1, 2, 2);
@@ -70,10 +84,7 @@ public class Grid {
         return grid;
     }
 
-    public void createGrid2(){
-        
 
-    }
 public void innerGrid(){
 
         for (int j = 0; j < 70; j++) {
@@ -84,7 +95,7 @@ public void innerGrid(){
         grid.add(gridInGrid,4,3); 
         GridPane.setRowSpan(gridInGrid,3);
         
-                        //newGrid.createGrid1().InGrid.add(topBtns.pizzaCost,0,13);
+        //newGrid.createGrid1().InGrid.add(topBtns.pizzaCost,0,13);
 
         //gridInGrid.setGridLinesVisible(true);
 }
@@ -94,74 +105,98 @@ public void innerGrid(){
         cardFlow.setHgap(10);
         cardFlow.setVgap(10);
 
-        Label ccLabel = new Label("Credit Card:");
-        Label ccnLabel = new Label("Card Number:");
-        TextField ccnTF = new TextField ();
-        ccnTF.setMaxWidth(200);
-        Label ccNameLabel = new Label("Name on Card:");
-        TextField ccNameTF = new TextField ();         
-        ccNameTF.setMaxWidth(250);       
-        Label ccExpiration = new Label("Expires:");
-        Label ccSecCode = new Label("Security Code:");
-        TextField ccSecCodeTF = new TextField ();    
-        ccSecCodeTF.setMaxWidth(50); 
-        Label ccAddress1 = new Label("Address (line 1):");
-        TextField ccAddr1TF= new TextField ();      
-        ccAddr1TF.setMaxWidth(300);       
-        Label ccAddress2 = new Label("Address (line 2):");
-        TextField ccAddr2TF= new TextField (); 
-        ccAddr2TF.setPrefWidth(300);       
-        Label ccCity = new Label("City:");
-        TextField ccCityTF= new TextField (); 
+        nameTF.setMaxWidth(200);       
+        ccAddr1TF.setMaxWidth(275);       
+        ccAddr2TF.setPrefWidth(275);       
         ccCityTF.setMaxWidth(100);       
-        Label ccState = new Label("State:");
-        TextField ccStateTF= new TextField (); 
         ccStateTF.setMaxWidth(45);       
-        Label ccZip = new Label("Zipcode:");
-        TextField ccZipTF= new TextField (); 
         ccZipTF.setMaxWidth(78);   
-        Button button = new Button("Lookup");
-
-        ComboBox cbCC = new ComboBox();
+        cbCC.getItems().clear();
         cbCC.getItems().addAll("American Express","Discover","Master Card","Visa");
-        ComboBox cbExpMonth = new ComboBox();
-        cbExpMonth.getItems().addAll("January","February","March","April","May","June","July","August","September","October","November","December");
-        ComboBox cbExpYear = new ComboBox();
-        cbExpYear.getItems().addAll("2017","2018","2019","2020","2021","2022","2023","2024","2025");
-        
+ 
         cardFlow.add(ccLabel,0,0);
         cardFlow.add(cbCC,1,0);
-        cardFlow.add(ccnLabel,0,1);
-        cardFlow.add(ccnTF,1,1);
-        cardFlow.add(ccNameLabel,0,2);
-        cardFlow.add(ccNameTF,1,2);
-        cardFlow.add(ccExpiration,0,3);
-        cardFlow.add(cbExpMonth,1,3);
-        cardFlow.add(cbExpYear,1,3);
-        GridPane.setHalignment(cbExpYear, HPos.CENTER);
-        cardFlow.add(ccSecCode,0,4);
-        cardFlow.add(ccSecCodeTF,1,4);
-        cardFlow.add(ccAddress1,0,5);
-        cardFlow.add(ccAddr1TF,1,5);
-        cardFlow.add(ccAddress2,0,6);
-        cardFlow.add(ccAddr2TF,1,6);
-        cardFlow.add(ccCity,0,7);
-        cardFlow.add(ccCityTF,1,7);
-        cardFlow.add(ccState,0,8);
-        cardFlow.add(ccStateTF,1,8);
-        cardFlow.add(ccZip,0,9);
-        cardFlow.add(ccZipTF,1,9);
-
+        cardFlow.add(nameLabel,0,1);
+        cardFlow.add(nameTF,1,1);
+        cardFlow.add(ccAddress1,0,2);
+        cardFlow.add(ccAddr1TF,1,2);
+        cardFlow.add(ccAddress2,0,3);
+        cardFlow.add(ccAddr2TF,1,3);
+        cardFlow.add(ccCity,0,4);
+        cardFlow.add(ccCityTF,1,4);
+        cardFlow.add(ccState,0,5);
+        cardFlow.add(ccStateTF,1,5);
+        cardFlow.add(ccZip,0,6);
+        cardFlow.add(ccZipTF,1,6);
         //cardFlow.add(ccLabel,0,0);
-
-
+        //named cardFlow because it was originally a flowpane, but worked better as a grid
         return cardFlow;
         }
-    public void cashScreen(){
+
+        public GridPane getCardFlow(){
+            return cardFlow;
+        }
+
+        public GridPane cardScreenOnPickup(){
     
+            //sets column dimensions
+            cardFlow.setHgap(10);
+            cardFlow.setVgap(10);
+    
+            cardFlow.getChildren().clear();
+            cardFlow.add(ccLabel,0,0);
+            cardFlow.add(cbCC,1,0);
+            cardFlow.add(nameLabel,0,1);
+            cardFlow.add(nameTF,1,1);
+            //cardFlow.add(ccLabel,0,0);
+            //named cardFlow because it was originally a flowpane, but worked better as a grid
+            return cardFlow;
+            }
+
+        public GridPane getCSOP(){
+            return cardFlow;
         }
-    public void checkScreen(){
-        
+        public GridPane notCardOnPickup(){
+            
+            //sets column dimensions
+            cardFlow.setHgap(10);
+            cardFlow.setVgap(10);
+    
+            cardFlow.getChildren().clear();
+            cardFlow.add(nameLabel,0,1);
+            cardFlow.add(nameTF,1,1);
+            //cardFlow.add(ccLabel,0,0);
+            //named cardFlow because it was originally a flowpane, but worked better as a grid
+            return cardFlow;
+            }
+
+        public GridPane getNCOP(){
+            return cardFlow;
         }
+    public GridPane deliveryNotWithCard(){
+
+
+        nameTF.setMaxWidth(200);       
+        ccAddr1TF.setMaxWidth(275);       
+        ccAddr2TF.setPrefWidth(275);       
+        ccCityTF.setMaxWidth(100);       
+        ccStateTF.setMaxWidth(45);       
+        ccZipTF.setMaxWidth(78);   
+ 
+        cardFlow.add(nameLabel,0,1);
+        cardFlow.add(nameTF,1,1);
+        cardFlow.add(ccAddress1,0,2);
+        cardFlow.add(ccAddr1TF,1,2);
+        cardFlow.add(ccAddress2,0,3);
+        cardFlow.add(ccAddr2TF,1,3);
+        cardFlow.add(ccCity,0,4);
+        cardFlow.add(ccCityTF,1,4);
+        cardFlow.add(ccState,0,5);
+        cardFlow.add(ccStateTF,1,5);
+        cardFlow.add(ccZip,0,6);
+        cardFlow.add(ccZipTF,1,6);
+        return cardFlow;
+        }
+
 
 }
