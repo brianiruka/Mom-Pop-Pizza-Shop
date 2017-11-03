@@ -24,12 +24,10 @@ public class Pizza extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Mom & Pop Pizza Shop");
         //window title
-        tabPane.getTabs().add(newTab.createTab1());
-        borderPane.setCenter(tabPane);
         // bind to take available space
         borderPane.prefHeightProperty().bind(scene1.heightProperty());
         borderPane.prefWidthProperty().bind(scene1.widthProperty());
-        root.getChildren().add(borderPane);
+        root.getChildren().add(newTab.createTab1());
 
         //initialize tabbed scene
         primaryStage.setScene(scene1);

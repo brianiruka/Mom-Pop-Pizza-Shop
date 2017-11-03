@@ -48,11 +48,11 @@ public class Grid {
     public GridPane createGrid1(){
     //method that creates initial gridpane
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(25);
+        col1.setPrefWidth(100);
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(50);
+        col2.setPrefWidth(250);
         ColumnConstraints col3 = new ColumnConstraints();
-        col3.setPercentWidth(25);
+        col3.setPrefWidth(200);
         grid.getColumnConstraints().addAll(col1,col2,col3);
         //sets column dimensions
         grid.setHgap(10);
@@ -70,7 +70,7 @@ public class Grid {
         grid.add(button, 2, 0, 1, 1);
         grid.add(label2, 0, 1, 2, 2);
         //adds labels,etc to grid at specific coordinates
-        grid.setPadding(new Insets(10, 50, 10, 10)); //(top/right/bottom/left)
+        grid.setPadding(new Insets(50, 0, 50, 50)); //(top/right/bottom/left)
 
         flowPane.setPadding(new Insets(10, 10, 10, 10));
         flowPane.setVgap(10);
