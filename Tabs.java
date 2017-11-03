@@ -33,7 +33,7 @@ public class Tabs {
     RadioButton cashBtn = new RadioButton("Cash");
     RadioButton checkBtn = new RadioButton("Check");
     
-    public Tab createTab1(){
+    public GridPane createTab1(){
         Tab tab = new Tab();
         tab.setText("Create Order");
         newGrid.createGrid1();
@@ -43,7 +43,7 @@ public class Tabs {
         
         topBtns.createButtons(newGrid);
         //tbuttons method that creates topping buttons/indivial windows, adds buttons to flowpane
-                newGrid.getGrid1().add(newGrid.flowPane, 0, 4);
+                newGrid.getGrid1().add(newGrid.flowPane, 0, 3);
         //adds flowpane to grid
         GridPane.setColumnSpan(newGrid.flowPane,2);
         GridPane.setRowSpan(newGrid.flowPane,10);
@@ -65,11 +65,15 @@ public class Tabs {
         VBox receiptPanel = new VBox();
         //creates receipt widget on stage right
         receiptPanel.getChildren().addAll(new Label("Order Summary:\n\n"),delivOp,topBtns.rSize,topBtns.rCrust,topBtns.rCheese,topBtns.rMeat,topBtns.rSauce,topBtns.rVeggies);
+        
         //adds labels to receipt panel vbox
         newGrid.getGrid1().add(receiptPanel,2,2);
-        GridPane.setRowSpan(receiptPanel,11);
-        GridPane.setColumnSpan(receiptPanel,5);
+        GridPane.setRowSpan(receiptPanel,15);
+        GridPane.setColumnSpan(receiptPanel,3);
         //newGrid.getGrid1().setGridLinesVisible(true);
+        newGrid.getGrid1().add(topBtns.totalLabel,2,7);
+        GridPane.setHalignment(topBtns.totalLabel, HPos.RIGHT);
+        
     
         commentBox.setMaxHeight(70);
         commentBox.setMaxWidth(250);     
@@ -77,25 +81,18 @@ public class Tabs {
         GridPane.setValignment(commentBox, VPos.BOTTOM);
         GridPane.setHalignment(commentBox, HPos.LEFT);
         GridPane.setValignment(navLabel, VPos.BOTTOM);
-        GridPane.setHalignment(navLabel, HPos.RIGHT);
+        GridPane.setHalignment(navLabel, HPos.LEFT);
 
-        newGrid.gridInGrid.add(topBtns.pizzaCost,0,13);
-        newGrid.gridInGrid.add(topBtns.extraMeat,0,37);
-        newGrid.gridInGrid.add(topBtns.extraMeat2,0,41);
-        newGrid.gridInGrid.add(topBtns.extraMeat3,0,45);
-        newGrid.gridInGrid.add(topBtns.extraVeggies,0,60);
-        newGrid.gridInGrid.add(topBtns.extraVeggies2,0,60);
-        newGrid.gridInGrid.add(topBtns.extraVeggies3,0,70);
-        newGrid.gridInGrid.add(topBtns.totalLabel,0,70);
 
-        newGrid.getGrid1().add(completeOrder,2,7);   
-        GridPane.setColumnSpan(completeOrder,3);
-        GridPane.setHalignment(completeOrder, HPos.LEFT);
-        GridPane.setValignment(completeOrder, VPos.BOTTOM);
+        newGrid.getGrid1().add(completeOrder,1,7);   
+        GridPane.setColumnSpan(completeOrder,1);
+        GridPane.setHalignment(completeOrder, HPos.RIGHT);
+        GridPane.setValignment(completeOrder, VPos.TOP);
         newGrid.getGrid1().add(commentBox,1,5);
         newGrid.getGrid1().add(navLabel,0,5);
         newGrid.cardScreen();
         newGrid.getCSOP();
+
 
         completeOrder.setOnAction((event) -> {
             if (complete == true){
@@ -113,7 +110,7 @@ public class Tabs {
                     GridPane.setValignment(commentBox, VPos.BOTTOM);
                     GridPane.setHalignment(commentBox, HPos.LEFT);
                     GridPane.setValignment(navLabel, VPos.BOTTOM);
-                    GridPane.setHalignment(navLabel, HPos.RIGHT);
+                    GridPane.setHalignment(navLabel, HPos.LEFT);
                     newGrid.getCardFlow().getChildren().clear();                    
                     newGrid.getGrid1().add(newGrid.cardScreen(),0,4);
                     GridPane.setColumnSpan(newGrid.getCardFlow(),2);
@@ -129,11 +126,11 @@ public class Tabs {
                 completeOrder.setText("Finalize");
                 //goes to review/payment scene when button clicked
                 paymentGrid.setPadding(new Insets(10, 10, 10, 10));
-                paymentGrid.setVgap(10);
+                paymentGrid.setVgap(20);
                 paymentGrid.setHgap(10);
                 paymentGrid.setPrefWrapLength(210);
                 //newGrid.getGrid1().setGridLinesVisible(true);
-                newGrid.getGrid1().add(paymentGrid,0,2,2,2);
+                newGrid.getGrid1().add(paymentGrid,0,2,2,3);
                 cardBtn.setToggleGroup(paymentType);
                 cardBtn.setSelected(true);
                 cashBtn.setToggleGroup(paymentType);
@@ -141,10 +138,12 @@ public class Tabs {
                 paymentGrid.getChildren().addAll(cardBtn,cashBtn,checkBtn);
                 checkBtn.setPrefSize(100, 25);
 
-                newGrid.getGrid1().add(backBtn,1,7);
+                newGrid.getGrid1().add(backBtn,0,7);
                 GridPane.setHalignment(backBtn, HPos.RIGHT);
-                GridPane.setValignment(backBtn, VPos.BOTTOM);
+                GridPane.setValignment(backBtn, VPos.TOP);
                 commentBox.toFront();
+                completeOrder.toFront();
+                
                 //moves comment box to front because it gets blocked when grid added
             }
             complete=true;
@@ -220,8 +219,10 @@ public class Tabs {
             GridPane.setValignment(commentBox, VPos.BOTTOM);
             GridPane.setHalignment(commentBox, HPos.LEFT);
             GridPane.setValignment(navLabel, VPos.BOTTOM);
-            GridPane.setHalignment(navLabel, HPos.RIGHT);
+            GridPane.setHalignment(navLabel, HPos.LEFT);
             commentBox.toFront();
+            completeOrder.toFront();
+            
             
                 //goes to review/payment scene when button clicked
                 complete = false;
@@ -229,33 +230,23 @@ public class Tabs {
 
         deliveryBtn.setOnAction(e ->{
             delivOp.setText("Delivery\n\n");
-            newGrid.getGrid1().getChildren().addAll(navLabel,commentBox);
+            commentBox.setDisable(false);
+            
             isDelivery = true;
         });            
         
         pickupBtn.setOnAction(e ->{
             delivOp.setText("Pickup\n\n");
-            newGrid.getGrid1().getChildren().removeAll(navLabel,commentBox);
+            commentBox.clear();
+            commentBox.setDisable(true);
             isDelivery = false;
         });
         //action for when each radiobutton is selected
             
 
-        return tab;
+        return newGrid.getGrid1();
 
 
     }
        
-    public Tab createTab2(){
-         Tab tab2 = new Tab();
-        tab2.setText("Create/Modify Customer");
-        return tab2;
-    }
-        
-    public Tab createTab3(){
-        Tab tab3 = new Tab();
-        tab3.setText("Menu Look-Up");
-        return tab3;
-
-    }
 }
