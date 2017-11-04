@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class Pizza extends Application {
     Group root = new Group();
     //needed to create scene
-    Scene scene1 = new Scene(root, 655, 600, Color.WHITE);
+    Scene scene1 = new Scene(root, 655, 650, Color.WHITE);
     //creates/holds initial scene, including tabs
     TabPane tabPane = new TabPane();
     Tabs newTab = new Tabs();
@@ -25,6 +25,7 @@ public class Pizza extends Application {
         primaryStage.setTitle("Mom & Pop Pizza Shop");
         //window title
         // bind to take available space
+        
         borderPane.prefHeightProperty().bind(scene1.heightProperty());
         borderPane.prefWidthProperty().bind(scene1.widthProperty());
         root.getChildren().add(newTab.createTab1());

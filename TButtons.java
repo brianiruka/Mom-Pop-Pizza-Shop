@@ -17,6 +17,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TextArea;
 
 
 
@@ -27,16 +29,20 @@ public class TButtons {
     public static double sizeTotal = 0;     
     public static double meatTotal = 0;        
     public static double crustTotal = 0;
-    public static double cheeseTotal = 0;        
+    public static double cheeseTotal = 0;      
+    public static double drinkSizeCost = 0;      
     public static double runningTotal = 0;     
-    public static String meatString ="Meat      ($0.50 each)\n     ";
-    public static String veggieString ="Veggies\n     ";
-    Label rSize = new Label("Size\n     -");
-    Label rCrust = new Label("Crust\n     -");
-    Label rCheese = new Label("Cheese\n     -");
+    public static String meatString ="Meat     ($0.50 each)\r\n     ";
+    public static String veggieString ="Veggies\r\n     ";
+    public static String cheese ="";    
+    public static Boolean isDelivery = true;
+    Label rSize = new Label("Size\r\n     -");
+    Label rCrust = new Label("Crust\r\n     -");
+    Label rCheese = new Label("Cheese\r\n     -");
     Label rMeat = new Label(meatString +"-");
-    Label rSauce = new Label("Sauce\n     -");
+    Label rSauce = new Label("Sauce\r\n     -");
     Label rVeggies = new Label(veggieString +"-");
+    Label rDrink = new Label("Drink\r\n     -");
     Label pizzaCost = new Label("");
     Label extraMeat = new Label("");
     Label extraMeat2 = new Label("");
@@ -45,10 +51,14 @@ public class TButtons {
     Label extraVeggies2 = new Label("");
     Label extraVeggies3 = new Label("");
     Label totalLabel = new Label("");
+    public static String deliveryOption ="Order for: Delivery\r\n";    
+    Label delivOp = new Label(deliveryOption);
+    CheckBox extraCheese = new CheckBox("Extra Cheese");
+
     
       
     Button btn = new Button();
-    String[] buttonNames = {"Size","Crust","Cheese","Meat","Sauce","Veggies"};
+    String[] buttonNames = {"Size","Crust","Cheese","Meat","Sauce","Veggies", "Drinks","Delivery"};
     //array of topping button names
     Grid newGridT = new Grid();
    // Pizza newPizza = new Pizza();
@@ -56,9 +66,12 @@ public class TButtons {
     String size = "";
     
     public Grid createButtons(Grid buttonGrid)  {
-
-        for (int j = 0; j < 6; j++) {
+        
+        for (int j = 0; j < 8; j++) {
             btn = new Button(buttonNames[j]);
+            if (j ==3){
+            buttonGrid.flowPane.getChildren().get(j-1).setDisable(true);
+            }
             btn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -97,12 +110,21 @@ public class TButtons {
                         switch(size) {
                             case "Small" :
                             sizeCost = 5.99;
+                            if (cheeseTotal !=0){
+                            cheeseTotal = 1.00;     
+                            }                       
                             break;
                             case "Medium" :
                             sizeCost = 7.99;
+                            if (cheeseTotal !=0){
+                            cheeseTotal = 1.25;     
+                            }                       
                             break;
                             case "Large" :
                             sizeCost = 9.99;
+                            if (cheeseTotal !=0){
+                            cheeseTotal = 1.50;
+                            }
                             break;
                             default :
                          }
@@ -110,21 +132,23 @@ public class TButtons {
                         if(slice.isSelected() == true){
                             sizeTotal = ((sizeCost/8) * pizzaAmt);
                             GridPane.setRowIndex(pizzaCost,13);
-                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal;
-                            rSize.setText("Size\n     +" +  pizzaAmt + " x "+size+" Slice(s)" + String.format("     $%-10.2f",(sizeCost/8) * pizzaAmt));
+                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;
+                            rSize.setText("Size\r\n     +" +  pizzaAmt + " x "+size+" Slice(s)" + String.format("     $%-10.2f",(sizeCost/8) * pizzaAmt));
                             totalLabel.setText(String.format("$%-10.2f", runningTotal));
                             dialogStage.close();
                         }
                         else{                        
                             sizeTotal = (sizeCost * pizzaAmt);
                             GridPane.setRowIndex(pizzaCost,13);
-                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal;
-                            rSize.setText("Size\n     +" +  pizzaAmt + " x "+size+" Pizza(s)" + String.format("     $%-10.2f", (sizeCost * pizzaAmt)));
+                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;
+                            rSize.setText("Size\r\n     +" +  pizzaAmt + " x "+size+" Pizza(s)" + String.format("     $%-10.2f", (sizeCost * pizzaAmt)));
                             totalLabel.setText(String.format("$%-10.2f", runningTotal));
                             dialogStage.close();
                             }
-                        
-
+                            if (extraCheese.isSelected() == true && sizeTotal != 0){
+                                rCheese.setText("Cheese\r\n     +"+cheese+ "\r\n         (+"+ String.format("$%-3.2f", cheeseTotal)+" extra cheese)");          
+                            }
+                            buttonGrid.flowPane.getChildren().get(2).setDisable(false);
                         });
 
                         VBox vbox = new VBox(slice,smallSize,mediumSize,largeSize,qField, quantity,okButton);
@@ -146,21 +170,21 @@ public class TButtons {
                         nyStyle.setToggleGroup(crusts);
                         RadioButton thin = new RadioButton("Thin");
                         thin.setToggleGroup(crusts);
-                        RadioButton stuffedCrust = new RadioButton("Stuffed Crust\n(+$1.00 extra)");
+                        RadioButton stuffedCrust = new RadioButton("Stuffed Crust\r\n(+$1.00 extra)");
                         stuffedCrust.setToggleGroup(crusts);
                         Button okButton = new Button("ok");
                         okButton.setOnAction(e ->{
                               
-                            stuffedCrust.setText("Stuffed Crust\n         (+$1.00 extra)");
+                            stuffedCrust.setText("Stuffed Crust\r\n         (+$1.00 extra)");
                             RadioButton chk = (RadioButton)crusts.getSelectedToggle();
                             //cast to radio button in order to gettext()
                             String crust = chk.getText();
-                            rCrust.setText("Crust\n     +"+crust);
+                            rCrust.setText("Crust\r\n     +"+crust);
                             crustTotal = 0;                            
                             if (crust.contains("Stuffed")== true){
                               crustTotal = 1;  
                             }
-                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal;                            
+                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;                            
                             totalLabel.setText(String.format("$%-10.2f", runningTotal));
                             
                             crustStage.close();
@@ -189,7 +213,7 @@ public class TButtons {
                             RadioButton chk = (RadioButton)sauces.getSelectedToggle();
                             //cast to radio button in order to gettext()
                             String sauce = chk.getText();
-                            rSauce.setText("Sauce\n     +"+sauce);
+                            rSauce.setText("Sauce\r\n     +"+sauce);
                             sauceStage.close();
                             });
                         VBox vbox = new VBox(pizzaSauce,bbqSauce,ranchSauce,noSauce,okButton);
@@ -200,6 +224,7 @@ public class TButtons {
                         sauceStage.show();
                     }
                     else if(event.toString().contains("Cheese")){
+                        
                         Stage cheeseStage = new Stage();
                         ToggleGroup cheeses = new ToggleGroup();
                         RadioButton mozzarella = new RadioButton("Mozzarella");
@@ -211,7 +236,6 @@ public class TButtons {
                         shreddedParm.setToggleGroup(cheeses);
                         RadioButton noCheese = new RadioButton("None");
                         noCheese.setToggleGroup(cheeses);
-                        CheckBox extraCheese = new CheckBox("Extra Cheese");
                         noCheese.setOnAction(e ->{
                             extraCheese.setSelected(false);
                             extraCheese.setDisable(true);                            
@@ -230,11 +254,11 @@ public class TButtons {
                         okButton.setOnAction(e ->{
                             RadioButton chk = (RadioButton)cheeses.getSelectedToggle();
                             //cast to radio button in order to gettext()
-                            String cheese = chk.getText();
-                            rCheese.setText("Cheese\n     +"+cheese);
+                            cheese = chk.getText();
+                            rCheese.setText("Cheese\r\n     +"+cheese);
 
                             cheeseTotal = 0;
-                            if(extraCheese.isSelected() == true){
+                            if(extraCheese.isSelected() == true && sizeTotal != 0){
                                 switch(size) {
                                     case "Small" :
                                     cheeseTotal = 1.00;
@@ -248,20 +272,21 @@ public class TButtons {
                                     default :
                                        System.out.println(size);
                                  }                                
-                                runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal;
-                                rCheese.setText("Cheese\n     +"+cheese+ "\n         (+"+ String.format("$%-3.2f", cheeseTotal)+" extra)");          
+                                runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;
+                                rCheese.setText("Cheese\r\n     +"+cheese+ "\r\n         (+"+ String.format("$%-3.2f", cheeseTotal)+" extra cheese)");          
                                 totalLabel.setText(String.format("$%-10.2f", runningTotal));
                             }
                             else{                        
-                                rCheese.setText("Cheese\n     +"+cheese);
+                                rCheese.setText("Cheese\r\n     +"+cheese);
                                 cheeseTotal = 0;                                
-                                runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal;
+                                runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;
                                 totalLabel.setText(String.format("$%-10.2f", runningTotal));                                
                                 }
 
                             cheeseStage.close();
 
                             });
+
                         VBox vbox = new VBox(mozzarella,cheddar,shreddedParm,noCheese,extraCheese,okButton);
                         vbox.setAlignment(Pos.TOP_LEFT);
                         vbox.setPadding(new Insets(15));
@@ -282,11 +307,11 @@ public class TButtons {
 
                         okButton.setOnAction(e ->{
                             String meatString = "Meat      ($0.50 each)";   
-                            rMeat.setText("Meat\n     -");                            
+                            rMeat.setText("Meat\r\n     -");                            
                             toppingCounter = 0;   
 
                             if (pepperoni.isSelected()){
-                                meatString = meatString + "\n     +Pepperoni";
+                                meatString = meatString + "\r\n     +Pepperoni";
                                 rMeat.setText(meatString);
                                 toppingCounter++;
                             }
@@ -297,25 +322,25 @@ public class TButtons {
                                 
                             }
                             if (sausage.isSelected()){
-                                meatString = meatString + "\n     +Sausage";
+                                meatString = meatString + "\r\n     +Sausage";
                                 rMeat.setText(meatString);
                                 toppingCounter++;
                                 
                             }
                             if (gChicken.isSelected()){
-                                meatString = meatString + "\n     +Grilled Chicken";
+                                meatString = meatString + "\r\n     +Grilled Chicken";
                                 rMeat.setText(meatString);
                                 toppingCounter++;
                                 
                             }
                             if (salami.isSelected()){
-                                meatString = meatString + "\n     +Salami";
+                                meatString = meatString + "\r\n     +Salami";
                                 rMeat.setText(meatString);
                                 toppingCounter++;
                                 
                             }
                             if (beef.isSelected()){
-                                meatString = meatString + "\n     +Beef";
+                                meatString = meatString + "\r\n     +Beef";
                                 rMeat.setText(meatString);
                                 toppingCounter++;                                
                             }
@@ -324,7 +349,7 @@ public class TButtons {
 
                             meatTotal = (.5 * (toppingCounter));
 
-                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal;                            
+                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;                            
                             totalLabel.setText(String.format("$%-10.2f", runningTotal));
                             meatStage.close();
 
@@ -348,35 +373,34 @@ public class TButtons {
                         Button okButton = new Button("ok");
                         okButton.setOnAction(e ->{
                             String veggieString = "Veggies     ";
-                            rVeggies.setText("Veggies\n     -");                            
+                            rVeggies.setText("Veggies\r\n     -");                            
                             if (blackOlives.isSelected()){
-                                veggieString = veggieString + "\n     +Black Olives";
+                                veggieString = veggieString + "\r\n     +Black Olives";
                                 rVeggies.setText(veggieString);
-                                System.out.println("black olives checked");
                             }
                             if (greenPeppers.isSelected()){
-                                veggieString = veggieString + "\n     +Green Bell Peppers";
+                                veggieString = veggieString + "\r\n     +Green Bell Peppers";
                                     rVeggies.setText(veggieString);
                             }
                             if (mushrooms.isSelected()){
-                                veggieString = veggieString + "\n     +Mushrooms";
+                                veggieString = veggieString + "\r\n     +Mushrooms";
                                     rVeggies.setText(veggieString);
                             }
                             if (pineapple.isSelected()){
-                                veggieString = veggieString + "\n     +Pineapple";
+                                veggieString = veggieString + "\r\n     +Pineapple";
                                     rVeggies.setText(veggieString);
                                     
                             }
                             if (cherryPeppers.isSelected()){
-                                veggieString = veggieString + "\n     +Cherry Peppers";
+                                veggieString = veggieString + "\r\n     +Cherry Peppers";
                                     rVeggies.setText(veggieString);
                             }
                             if (onions.isSelected()){
-                                veggieString = veggieString + "\n     +Onions";
+                                veggieString = veggieString + "\r\n     +Onions";
                                     rVeggies.setText(veggieString);
                             }
                             if (tomato.isSelected()){
-                                veggieString = veggieString + "\n     +Tomato";
+                                veggieString = veggieString + "\r\n     +Tomato";
                                     rVeggies.setText(veggieString);
                                     
                             }
@@ -390,18 +414,127 @@ public class TButtons {
                         veggieStage.setScene(new Scene(vbox));
                         veggieStage.show();
                     }
-        
+                    else if(event.toString().contains("Drink")){
+                        Stage drinkStage = new Stage();
+                        ToggleGroup drinks = new ToggleGroup();
+                        ToggleGroup drinkSize = new ToggleGroup();
+                        RadioButton coke = new RadioButton("Coke");
+                        coke.setToggleGroup(drinks);
+                        coke.setSelected(true);
+                        RadioButton sprite = new RadioButton("Sprite");
+                        sprite.setToggleGroup(drinks);
+                        RadioButton dietCoke = new RadioButton("Diet Coke");
+                        dietCoke.setToggleGroup(drinks);
+                        RadioButton fanta = new RadioButton("Fanta");
+                        fanta.setToggleGroup(drinks);
+                        RadioButton drPepper = new RadioButton("Dr. Pepper");
+                        drPepper.setToggleGroup(drinks);
+                        RadioButton dietDrPepper = new RadioButton("Diet Dr. Pepper");
+                        dietDrPepper.setToggleGroup(drinks);
+                        RadioButton lemonade = new RadioButton("Minute Maid Lemonade");
+                        lemonade.setToggleGroup(drinks);
+                        RadioButton noDrink = new RadioButton("None");
+                        noDrink.setToggleGroup(drinks);
+                        Label drinkSizeLabel = new Label("Size:");
+                        Button okButton = new Button("ok");    
+                        RadioButton twentyOz = new RadioButton("20 Oz");
+                        twentyOz.setToggleGroup(drinkSize);
+                        twentyOz.setSelected(true);
+                        RadioButton twoLiters = new RadioButton("2 Liters");
+                        twoLiters.setToggleGroup(drinkSize);  
+                        
+                        EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                twentyOz.setDisable(false);
+                                twoLiters.setDisable(false);
+                            }
+                        };
+                        
+                        coke.setOnAction(handler);
+                        sprite.setOnAction(handler);
+                        dietCoke.setOnAction(handler);
+                        fanta.setOnAction(handler);             
+                        drPepper.setOnAction(handler);                
+                        dietDrPepper.setOnAction(handler);    
+                        lemonade.setOnAction(handler);
+                  
+                        noDrink.setOnAction((e) -> {
+                            rDrink.setText("Drink\r\n     -");
+                            twentyOz.setDisable(true);
+                            twoLiters.setDisable(true);
+                        });
+                        okButton.setOnAction(e ->{
+                            rDrink.setText("Drink\r\n     -");                            
+                            if (coke.isSelected()){
+                                rDrink.setText("Drink\r\n     +Coke");
+                            }
+                            if (sprite.isSelected()){
+                                rDrink.setText("Drink\r\n     +Sprite");
+                            }
+                            if (dietCoke.isSelected()){
+                                rDrink.setText("Drink\r\n     +Diet Coke");
+                            }
+                            if (fanta.isSelected()){
+                                rDrink.setText("Drink\r\n     +Fanta");
+                                    
+                            }
+                            if (drPepper.isSelected()){
+                                rDrink.setText("Drink\r\n     +Dr. Pepper");
+                            }
+                            if (dietDrPepper.isSelected()){
+                                rDrink.setText("Drink\r\n     +Diet Dr. Pepper");
+                            }
+                            if (lemonade.isSelected()){
+                                rDrink.setText("Drink\r\n     +Minute Maid Lemonade");
+                            } 
+
+                            RadioButton chk2 = (RadioButton)drinkSize.getSelectedToggle();
+                            //cast to radio button in order to gettext()
+                            String drinkSizes = chk2.getText();
+
+                            
+                            switch(drinkSizes) {
+                                case "20 Oz" :
+                                drinkSizeCost = .99;
+                                break;
+                                case "2 Liters" :
+                                drinkSizeCost = 2.49;
+                                break;
+                                default :
+                             }
+
+                            if (noDrink.isSelected()){
+                                drinkSizeCost = 0;
+                            }else
+                            {                       
+                            rDrink.setText(rDrink.getText() + "\r\n          +" + drinkSizes + " ($" + drinkSizeCost + ")"  );
+                            }
+                            runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;                            
+                            totalLabel.setText(String.format("$%-10.2f", runningTotal));
+
+                            drinkStage.close();
+                            });
+                        VBox vbox = new VBox(coke,dietCoke,sprite,fanta,drPepper,dietDrPepper,lemonade,noDrink,drinkSizeLabel, twentyOz, twoLiters,okButton);
+                        vbox.setAlignment(Pos.TOP_LEFT);
+                        vbox.setPadding(new Insets(15));
+                        vbox.setSpacing(10);                                                                                                
+                        drinkStage.setScene(new Scene(vbox));
+                        drinkStage.show();
+                    }
+
+
+                    
                 }
 
             });
             btn.setPrefSize(100, 100);
             buttonGrid.flowPane.getChildren().add(btn);
             
+
         }//end topping buttons
     return buttonGrid;
     }
-    public void restoreTButtons(){
-
-    }
+    
 }
 

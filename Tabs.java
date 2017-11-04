@@ -11,19 +11,18 @@ import javafx.scene.layout.FlowPane;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
 
 
 
 public class Tabs {
 
-    public static String deliveryOption ="Delivery\n\n";
     public static boolean complete = false;
     public static boolean isDelivery = true;
     
     TButtons topBtns = new TButtons();
     Grid newGrid = new Grid();
     FlowPane paymentGrid = new FlowPane();
-    Label delivOp = new Label(deliveryOption);
     Label navLabel = new Label("Navigation \nInformation:");
     Button completeOrder = new Button("Complete Order");
     Button backBtn = new Button("Back");
@@ -32,7 +31,9 @@ public class Tabs {
     RadioButton cardBtn = new RadioButton("Card");
     RadioButton cashBtn = new RadioButton("Cash");
     RadioButton checkBtn = new RadioButton("Check");
-    
+    Receipt newReceipt = new Receipt();
+    String pTypes = "Card";
+
     public GridPane createTab1(){
         Tab tab = new Tab();
         tab.setText("Create Order");
@@ -42,30 +43,28 @@ public class Tabs {
         tab.setContent(newGrid.getGrid1());
         
         topBtns.createButtons(newGrid);
+
+        RadioButton rb1 = (RadioButton)paymentType.getSelectedToggle();
+        //cast to radio button in order to gettext()
+        
+
         //tbuttons method that creates topping buttons/indivial windows, adds buttons to flowpane
                 newGrid.getGrid1().add(newGrid.flowPane, 0, 3);
         //adds flowpane to grid
         GridPane.setColumnSpan(newGrid.flowPane,2);
         GridPane.setRowSpan(newGrid.flowPane,10);
-        ToggleGroup orderType = new ToggleGroup();
-        RadioButton deliveryBtn = new RadioButton("Delivery");
-        deliveryBtn.setToggleGroup(orderType);
-        deliveryBtn.setSelected(true);
-        RadioButton pickupBtn = new RadioButton("Pickup");
-        pickupBtn.setToggleGroup(orderType);
-        newGrid.flowPane.getChildren().addAll(deliveryBtn,pickupBtn);
-        pickupBtn.setPrefSize(100, 50);
+
         //delivery and pickup radio buttons
 
-        RadioButton chk = (RadioButton)orderType.getSelectedToggle();
-        //cast to radio button in order to gettext()
-        deliveryOption = chk.getText();
+
         //string of delivery option selected
 
         VBox receiptPanel = new VBox();
+        Label orderLabel = new Label("Order Summary:\n\n");
+        orderLabel.setFont(new Font(20));
+
         //creates receipt widget on stage right
-        receiptPanel.getChildren().addAll(new Label("Order Summary:\n\n"),delivOp,topBtns.rSize,topBtns.rCrust,topBtns.rCheese,topBtns.rMeat,topBtns.rSauce,topBtns.rVeggies);
-        
+        receiptPanel.getChildren().addAll(orderLabel,topBtns.delivOp,topBtns.rSize,topBtns.rCrust,topBtns.rCheese,topBtns.rMeat,topBtns.rSauce,topBtns.rVeggies,topBtns.rDrink);
         //adds labels to receipt panel vbox
         newGrid.getGrid1().add(receiptPanel,2,2);
         GridPane.setRowSpan(receiptPanel,15);
@@ -73,7 +72,6 @@ public class Tabs {
         //newGrid.getGrid1().setGridLinesVisible(true);
         newGrid.getGrid1().add(topBtns.totalLabel,2,7);
         GridPane.setHalignment(topBtns.totalLabel, HPos.RIGHT);
-        
     
         commentBox.setMaxHeight(70);
         commentBox.setMaxWidth(250);     
@@ -88,15 +86,15 @@ public class Tabs {
         GridPane.setColumnSpan(completeOrder,1);
         GridPane.setHalignment(completeOrder, HPos.RIGHT);
         GridPane.setValignment(completeOrder, VPos.TOP);
-        newGrid.getGrid1().add(commentBox,1,5);
-        newGrid.getGrid1().add(navLabel,0,5);
+        newGrid.getGrid1().add(commentBox,1,6);
+        newGrid.getGrid1().add(navLabel,0,6);
         newGrid.cardScreen();
         newGrid.getCSOP();
 
 
         completeOrder.setOnAction((event) -> {
             if (complete == true){
-                System.out.println("This will reset back to main page, print receipt");
+                newReceipt.printReceipt(topBtns.delivOp,topBtns.rSize,topBtns.rCrust,topBtns.rCheese,topBtns.rMeat,topBtns.rSauce,topBtns.rVeggies,topBtns.rDrink,topBtns.runningTotal,pTypes);
             }
             else{
                 newGrid.getGrid1().getChildren().remove(newGrid.flowPane);
@@ -104,8 +102,8 @@ public class Tabs {
                 if (isDelivery == true){
                     GridPane.setColumnIndex(navLabel, 0);
                     GridPane.setColumnIndex(commentBox, 1);
-                    GridPane.setRowIndex(navLabel, 5);
-                    GridPane.setRowIndex(commentBox, 5);
+                    GridPane.setRowIndex(navLabel, 6);
+                    GridPane.setRowIndex(commentBox, 6);
                 
                     GridPane.setValignment(commentBox, VPos.BOTTOM);
                     GridPane.setHalignment(commentBox, HPos.LEFT);
@@ -162,8 +160,12 @@ public class Tabs {
                 GridPane.setColumnSpan(newGrid.getCSOP(),2);
                 GridPane.setRowSpan(newGrid.getCSOP(),5);
             }
+            pTypes = "Card";
+            
                 backBtn.toFront();
                 commentBox.toFront();
+                completeOrder.toFront();
+                
                 
             
         });            
@@ -181,8 +183,11 @@ public class Tabs {
                 GridPane.setColumnSpan(newGrid.getCardFlow(),2);
                 GridPane.setRowSpan(newGrid.getCardFlow(),5);
             }
+            pTypes = "Cash";
                 backBtn.toFront();
                 commentBox.toFront();
+                completeOrder.toFront();
+                
                 
         });
 
@@ -199,8 +204,11 @@ public class Tabs {
                 GridPane.setColumnSpan(newGrid.getNCOP(),2);
                 GridPane.setRowSpan(newGrid.getNCOP(),5);
             }
+                pTypes = "Check";
                 backBtn.toFront();
                 commentBox.toFront();
+                completeOrder.toFront();
+                
                 
         });
 
@@ -228,25 +236,36 @@ public class Tabs {
                 complete = false;
             });
 
-        deliveryBtn.setOnAction(e ->{
-            delivOp.setText("Delivery\n\n");
-            commentBox.setDisable(false);
+            topBtns.btn.setOnAction((event) -> {
+                if(topBtns.isDelivery == false){
+                    topBtns.delivOp.setText("Order for: " + "Delivery\r\n"); 
+                    topBtns.btn.setText("Delivery");  
+                    commentBox.setDisable(false);
+                    topBtns.isDelivery = true;
+                    isDelivery = true;
+                                               
+                    
+                }
+                else{
+                    topBtns.delivOp.setText("Order for: " + "Pick-up\r\n");  
+                    topBtns.btn.setText("Pick-up");  
+                    commentBox.setDisable(true);
+                    topBtns.isDelivery = false;
+                    isDelivery = false;
+                                              
+                    
+                    
+                }
+            });
             
-            isDelivery = true;
-        });            
-        
-        pickupBtn.setOnAction(e ->{
-            delivOp.setText("Pickup\n\n");
-            commentBox.clear();
-            commentBox.setDisable(true);
-            isDelivery = false;
-        });
+
         //action for when each radiobutton is selected
-            
+
 
         return newGrid.getGrid1();
 
 
     }
-       
+    
+
 }

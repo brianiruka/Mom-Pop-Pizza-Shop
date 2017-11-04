@@ -80,6 +80,9 @@ public class Grid {
         return grid;
         
     }
+
+
+        
     public GridPane getGrid1(){
         return grid;
     }
