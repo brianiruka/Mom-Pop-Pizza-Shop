@@ -200,6 +200,15 @@ public void innerGrid(){
         cardFlow.add(ccZipTF,1,6);
         return cardFlow;
         }
-
+    public void clearGrid(){
+        textField.clear();
+        label2.setText("Please enter Customer ID...");
+        nameTF.clear();
+        ccAddr1TF.clear();
+        ccAddr2TF.clear();
+        ccCityTF.clear();
+        ccStateTF.clear();
+        ccZipTF.clear();
+    }
 
 }

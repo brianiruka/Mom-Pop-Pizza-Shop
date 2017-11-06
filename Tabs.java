@@ -21,7 +21,6 @@ public class Tabs {
     public static boolean isDelivery = true;
     
     TButtons topBtns = new TButtons();
-    Grid newGrid = new Grid();
     FlowPane paymentGrid = new FlowPane();
     Label navLabel = new Label("Navigation \nInformation:");
     Button completeOrder = new Button("Complete Order");
@@ -37,22 +36,22 @@ public class Tabs {
     public GridPane createTab1(){
         Tab tab = new Tab();
         tab.setText("Create Order");
-        newGrid.createGrid1();
-        newGrid.innerGrid();
+        topBtns.buttonGrid.createGrid1();
+        topBtns.buttonGrid.innerGrid();
         //uses grid class method to populate 0th tab
-        tab.setContent(newGrid.getGrid1());
+        tab.setContent(topBtns.buttonGrid.getGrid1());
         
-        topBtns.createButtons(newGrid);
+        topBtns.createButtons();
 
         RadioButton rb1 = (RadioButton)paymentType.getSelectedToggle();
         //cast to radio button in order to gettext()
         
 
         //tbuttons method that creates topping buttons/indivial windows, adds buttons to flowpane
-                newGrid.getGrid1().add(newGrid.flowPane, 0, 3);
+        topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.flowPane, 0, 3);
         //adds flowpane to grid
-        GridPane.setColumnSpan(newGrid.flowPane,2);
-        GridPane.setRowSpan(newGrid.flowPane,10);
+        GridPane.setColumnSpan(topBtns.buttonGrid.flowPane,2);
+        GridPane.setRowSpan(topBtns.buttonGrid.flowPane,10);
 
         //delivery and pickup radio buttons
 
@@ -66,11 +65,11 @@ public class Tabs {
         //creates receipt widget on stage right
         receiptPanel.getChildren().addAll(orderLabel,topBtns.delivOp,topBtns.rSize,topBtns.rCrust,topBtns.rCheese,topBtns.rMeat,topBtns.rSauce,topBtns.rVeggies,topBtns.rDrink);
         //adds labels to receipt panel vbox
-        newGrid.getGrid1().add(receiptPanel,2,2);
+        topBtns.buttonGrid.getGrid1().add(receiptPanel,2,2);
         GridPane.setRowSpan(receiptPanel,15);
         GridPane.setColumnSpan(receiptPanel,3);
-        //newGrid.getGrid1().setGridLinesVisible(true);
-        newGrid.getGrid1().add(topBtns.totalLabel,2,7);
+        //topBtns.buttonGrid.getGrid1().setGridLinesVisible(true);
+        topBtns.buttonGrid.getGrid1().add(topBtns.totalLabel,2,7);
         GridPane.setHalignment(topBtns.totalLabel, HPos.RIGHT);
     
         commentBox.setMaxHeight(70);
@@ -82,22 +81,49 @@ public class Tabs {
         GridPane.setHalignment(navLabel, HPos.LEFT);
 
 
-        newGrid.getGrid1().add(completeOrder,1,7);   
+        topBtns.buttonGrid.getGrid1().add(completeOrder,1,7);   
         GridPane.setColumnSpan(completeOrder,1);
         GridPane.setHalignment(completeOrder, HPos.RIGHT);
         GridPane.setValignment(completeOrder, VPos.TOP);
-        newGrid.getGrid1().add(commentBox,1,6);
-        newGrid.getGrid1().add(navLabel,0,6);
-        newGrid.cardScreen();
-        newGrid.getCSOP();
+        topBtns.buttonGrid.getGrid1().add(commentBox,1,6);
+        topBtns.buttonGrid.getGrid1().add(navLabel,0,6);
+        topBtns.buttonGrid.cardScreen();
+        topBtns.buttonGrid.getCSOP();
 
 
         completeOrder.setOnAction((event) -> {
             if (complete == true){
-                newReceipt.printReceipt(topBtns.delivOp,topBtns.rSize,topBtns.rCrust,topBtns.rCheese,topBtns.rMeat,topBtns.rSauce,topBtns.rVeggies,topBtns.rDrink,topBtns.runningTotal,pTypes);
+                complete = false;
+                newReceipt.printReceipt(topBtns.delivOp,topBtns.rSize,topBtns.rCrust,topBtns.rCheese,topBtns.rMeat,topBtns.rSauce,topBtns.rVeggies,topBtns.rDrink,topBtns.runningTotal,pTypes,topBtns.buttonGrid.nameTF.getText());
+                clearTabs();
+                topBtns.buttonGrid.clearGrid();
+                topBtns.tButtonsReset();
+                
+
+                topBtns.buttonGrid.getGrid1().getChildren().add(topBtns.buttonGrid.flowPane);
+                topBtns.buttonGrid.getGrid1().getChildren().remove(backBtn);   
+                completeOrder.setText("Complete Order");
+                topBtns.buttonGrid.getGrid1().getChildren().remove(topBtns.buttonGrid.getCardFlow());
+                paymentGrid.getChildren().removeAll(cardBtn,cashBtn,checkBtn);
+                topBtns.buttonGrid.getGrid1().getChildren().remove(paymentGrid);
+    
+         
+                commentBox.setMaxHeight(70);
+                commentBox.setMaxWidth(250);     
+                GridPane.setColumnSpan(commentBox,1);
+                GridPane.setValignment(commentBox, VPos.BOTTOM);
+                GridPane.setHalignment(commentBox, HPos.LEFT);
+                GridPane.setValignment(navLabel, VPos.BOTTOM);
+                GridPane.setHalignment(navLabel, HPos.LEFT);
+                commentBox.toFront();
+                completeOrder.toFront();
+                
+                
+                    //goes to review/payment scene when button clicked
+                    
             }
             else{
-                newGrid.getGrid1().getChildren().remove(newGrid.flowPane);
+                topBtns.buttonGrid.getGrid1().getChildren().remove(topBtns.buttonGrid.flowPane);
 
                 if (isDelivery == true){
                     GridPane.setColumnIndex(navLabel, 0);
@@ -109,16 +135,16 @@ public class Tabs {
                     GridPane.setHalignment(commentBox, HPos.LEFT);
                     GridPane.setValignment(navLabel, VPos.BOTTOM);
                     GridPane.setHalignment(navLabel, HPos.LEFT);
-                    newGrid.getCardFlow().getChildren().clear();                    
-                    newGrid.getGrid1().add(newGrid.cardScreen(),0,4);
-                    GridPane.setColumnSpan(newGrid.getCardFlow(),2);
-                    GridPane.setRowSpan(newGrid.getCardFlow(),5);
+                    topBtns.buttonGrid.getCardFlow().getChildren().clear();                    
+                    topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.cardScreen(),0,4);
+                    GridPane.setColumnSpan(topBtns.buttonGrid.getCardFlow(),2);
+                    GridPane.setRowSpan(topBtns.buttonGrid.getCardFlow(),5);
                 }
                 else {
-                    newGrid.getCardFlow().getChildren().clear();
-                    newGrid.getGrid1().add(newGrid.cardScreenOnPickup(),0,4);
-                    GridPane.setColumnSpan(newGrid.getCSOP(),2);
-                    GridPane.setRowSpan(newGrid.getCSOP(),5);
+                    topBtns.buttonGrid.getCardFlow().getChildren().clear();
+                    topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.cardScreenOnPickup(),0,4);
+                    GridPane.setColumnSpan(topBtns.buttonGrid.getCSOP(),2);
+                    GridPane.setRowSpan(topBtns.buttonGrid.getCSOP(),5);
                     backBtn.toFront(); 
                 }
                 completeOrder.setText("Finalize");
@@ -127,8 +153,8 @@ public class Tabs {
                 paymentGrid.setVgap(20);
                 paymentGrid.setHgap(10);
                 paymentGrid.setPrefWrapLength(210);
-                //newGrid.getGrid1().setGridLinesVisible(true);
-                newGrid.getGrid1().add(paymentGrid,0,2,2,3);
+                //topBtns.buttonGrid.getGrid1().setGridLinesVisible(true);
+                topBtns.buttonGrid.getGrid1().add(paymentGrid,0,2,2,3);
                 cardBtn.setToggleGroup(paymentType);
                 cardBtn.setSelected(true);
                 cashBtn.setToggleGroup(paymentType);
@@ -136,29 +162,30 @@ public class Tabs {
                 paymentGrid.getChildren().addAll(cardBtn,cashBtn,checkBtn);
                 checkBtn.setPrefSize(100, 25);
 
-                newGrid.getGrid1().add(backBtn,0,7);
+                topBtns.buttonGrid.getGrid1().add(backBtn,0,7);
                 GridPane.setHalignment(backBtn, HPos.RIGHT);
                 GridPane.setValignment(backBtn, VPos.TOP);
                 commentBox.toFront();
                 completeOrder.toFront();
                 
                 //moves comment box to front because it gets blocked when grid added
+                complete=true;
             }
-            complete=true;
+
         });
 
         cardBtn.setOnAction(e ->{
-            newGrid.getGrid1().getChildren().remove(newGrid.getCardFlow());                                                            
-            newGrid.getCardFlow().getChildren().clear();     
+            topBtns.buttonGrid.getGrid1().getChildren().remove(topBtns.buttonGrid.getCardFlow());                                                            
+            topBtns.buttonGrid.getCardFlow().getChildren().clear();     
             if (isDelivery == true){
-                newGrid.getGrid1().add(newGrid.cardScreen(),0,4);
-                GridPane.setColumnSpan(newGrid.getCardFlow(),2);
-                GridPane.setRowSpan(newGrid.getCardFlow(),5);
+                topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.cardScreen(),0,4);
+                GridPane.setColumnSpan(topBtns.buttonGrid.getCardFlow(),2);
+                GridPane.setRowSpan(topBtns.buttonGrid.getCardFlow(),5);
             }
             else{
-                newGrid.getGrid1().add(newGrid.cardScreenOnPickup(),0,4);
-                GridPane.setColumnSpan(newGrid.getCSOP(),2);
-                GridPane.setRowSpan(newGrid.getCSOP(),5);
+                topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.cardScreenOnPickup(),0,4);
+                GridPane.setColumnSpan(topBtns.buttonGrid.getCSOP(),2);
+                GridPane.setRowSpan(topBtns.buttonGrid.getCSOP(),5);
             }
             pTypes = "Card";
             
@@ -171,17 +198,17 @@ public class Tabs {
         });            
         
         cashBtn.setOnAction(e ->{
-            newGrid.getGrid1().getChildren().remove(newGrid.getCardFlow());                                                            
-            newGrid.getCardFlow().getChildren().clear();     
+            topBtns.buttonGrid.getGrid1().getChildren().remove(topBtns.buttonGrid.getCardFlow());                                                            
+            topBtns.buttonGrid.getCardFlow().getChildren().clear();     
             if (isDelivery == true){
-                newGrid.getGrid1().add(newGrid.deliveryNotWithCard(),0,4);
-                GridPane.setColumnSpan(newGrid.getCardFlow(),2);
-                GridPane.setRowSpan(newGrid.getCardFlow(),5);
+                topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.deliveryNotWithCard(),0,4);
+                GridPane.setColumnSpan(topBtns.buttonGrid.getCardFlow(),2);
+                GridPane.setRowSpan(topBtns.buttonGrid.getCardFlow(),5);
             }
             else{
-                newGrid.getGrid1().add(newGrid.notCardOnPickup(),0,4);
-                GridPane.setColumnSpan(newGrid.getCardFlow(),2);
-                GridPane.setRowSpan(newGrid.getCardFlow(),5);
+                topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.notCardOnPickup(),0,4);
+                GridPane.setColumnSpan(topBtns.buttonGrid.getCardFlow(),2);
+                GridPane.setRowSpan(topBtns.buttonGrid.getCardFlow(),5);
             }
             pTypes = "Cash";
                 backBtn.toFront();
@@ -192,17 +219,17 @@ public class Tabs {
         });
 
         checkBtn.setOnAction(e ->{
-            newGrid.getGrid1().getChildren().remove(newGrid.getCardFlow());                                                            
-            newGrid.getCardFlow().getChildren().clear();     
+            topBtns.buttonGrid.getGrid1().getChildren().remove(topBtns.buttonGrid.getCardFlow());                                                            
+            topBtns.buttonGrid.getCardFlow().getChildren().clear();     
             if (isDelivery == true){
-                newGrid.getGrid1().add(newGrid.deliveryNotWithCard(),0,4);
-                GridPane.setColumnSpan(newGrid.getCardFlow(),2);
-                GridPane.setRowSpan(newGrid.getCardFlow(),5);
+                topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.deliveryNotWithCard(),0,4);
+                GridPane.setColumnSpan(topBtns.buttonGrid.getCardFlow(),2);
+                GridPane.setRowSpan(topBtns.buttonGrid.getCardFlow(),5);
             }
             else{
-                newGrid.getGrid1().add(newGrid.notCardOnPickup(),0,4);
-                GridPane.setColumnSpan(newGrid.getNCOP(),2);
-                GridPane.setRowSpan(newGrid.getNCOP(),5);
+                topBtns.buttonGrid.getGrid1().add(topBtns.buttonGrid.notCardOnPickup(),0,4);
+                GridPane.setColumnSpan(topBtns.buttonGrid.getNCOP(),2);
+                GridPane.setRowSpan(topBtns.buttonGrid.getNCOP(),5);
             }
                 pTypes = "Check";
                 backBtn.toFront();
@@ -213,12 +240,12 @@ public class Tabs {
         });
 
         backBtn.setOnAction((event) -> {
-            newGrid.getGrid1().getChildren().add(newGrid.flowPane);
-            newGrid.getGrid1().getChildren().remove(backBtn);   
+            topBtns.buttonGrid.getGrid1().getChildren().add(topBtns.buttonGrid.flowPane);
+            topBtns.buttonGrid.getGrid1().getChildren().remove(backBtn);   
             completeOrder.setText("Complete Order");
-            newGrid.getGrid1().getChildren().remove(newGrid.getCardFlow());
+            topBtns.buttonGrid.getGrid1().getChildren().remove(topBtns.buttonGrid.getCardFlow());
             paymentGrid.getChildren().removeAll(cardBtn,cashBtn,checkBtn);
-            newGrid.getGrid1().getChildren().remove(paymentGrid);
+            topBtns.buttonGrid.getGrid1().getChildren().remove(paymentGrid);
 
      
             commentBox.setMaxHeight(70);
@@ -262,10 +289,17 @@ public class Tabs {
         //action for when each radiobutton is selected
 
 
-        return newGrid.getGrid1();
+        return topBtns.buttonGrid.getGrid1();
 
 
     }
-    
+    public void clearTabs(){
+        complete = false;
+        isDelivery = true;
+        pTypes = "Card";
+        commentBox.setDisable(false);
+        
+        
+    }
 
 }

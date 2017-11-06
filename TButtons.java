@@ -21,7 +21,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TextArea;
 
 
-
 public class TButtons {
     public static int pizzaAmt = 0;
     public static int toppingCounter = 0; 
@@ -44,12 +43,6 @@ public class TButtons {
     Label rVeggies = new Label(veggieString +"-");
     Label rDrink = new Label("Drink\r\n     -");
     Label pizzaCost = new Label("");
-    Label extraMeat = new Label("");
-    Label extraMeat2 = new Label("");
-    Label extraMeat3 = new Label("");
-    Label extraVeggies = new Label("");
-    Label extraVeggies2 = new Label("");
-    Label extraVeggies3 = new Label("");
     Label totalLabel = new Label("");
     public static String deliveryOption ="Order for: Delivery\r\n";    
     Label delivOp = new Label(deliveryOption);
@@ -60,12 +53,13 @@ public class TButtons {
     Button btn = new Button();
     String[] buttonNames = {"Size","Crust","Cheese","Meat","Sauce","Veggies", "Drinks","Delivery"};
     //array of topping button names
-    Grid newGridT = new Grid();
+    Grid buttonGrid = new Grid();
+    
    // Pizza newPizza = new Pizza();
    RadioButton chk = new RadioButton();
     String size = "";
     
-    public Grid createButtons(Grid buttonGrid)  {
+    public void createButtons()  {
         
         for (int j = 0; j < 8; j++) {
             btn = new Button(buttonNames[j]);
@@ -131,7 +125,6 @@ public class TButtons {
                         //newGridT.gridInGrid.add(pizzaCost,0,13);
                         if(slice.isSelected() == true){
                             sizeTotal = ((sizeCost/8) * pizzaAmt);
-                            GridPane.setRowIndex(pizzaCost,13);
                             runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;
                             rSize.setText("Size\r\n     +" +  pizzaAmt + " x "+size+" Slice(s)" + String.format("     $%-10.2f",(sizeCost/8) * pizzaAmt));
                             totalLabel.setText(String.format("$%-10.2f", runningTotal));
@@ -139,7 +132,6 @@ public class TButtons {
                         }
                         else{                        
                             sizeTotal = (sizeCost * pizzaAmt);
-                            GridPane.setRowIndex(pizzaCost,13);
                             runningTotal = sizeTotal + meatTotal + cheeseTotal + crustTotal + drinkSizeCost;
                             rSize.setText("Size\r\n     +" +  pizzaAmt + " x "+size+" Pizza(s)" + String.format("     $%-10.2f", (sizeCost * pizzaAmt)));
                             totalLabel.setText(String.format("$%-10.2f", runningTotal));
@@ -533,8 +525,41 @@ public class TButtons {
             
 
         }//end topping buttons
-    return buttonGrid;
+        
     }
+
     
+    public void tButtonsReset(){
+        pizzaAmt = 0;
+        toppingCounter = 0; 
+        toppingCounterV = 0;
+        sizeTotal = 0;     
+        meatTotal = 0;        
+        crustTotal = 0;
+        cheeseTotal = 0;      
+        drinkSizeCost = 0;      
+        runningTotal = 0;     
+        meatString ="Meat     ($0.50 each)\r\n     ";
+        veggieString ="Veggies\r\n     ";
+        cheese ="";    
+        isDelivery = true;
+        rSize.setText("Size\r\n     -");
+        rCrust.setText("Crust\r\n     -");
+        rCheese.setText("Cheese\r\n     -");
+        rMeat.setText(meatString +"-");
+        rSauce.setText("Sauce\r\n     -");
+        rVeggies.setText(veggieString +"-");
+        rDrink.setText("Drink\r\n     -");
+        totalLabel.setText("");
+        deliveryOption ="Order for: Delivery\r\n";    
+        delivOp.setText(deliveryOption);    
+        size = "";
+        btn.setText("Delivery");  
+        extraCheese.setSelected(false);
+        buttonGrid.flowPane.getChildren().get(2).setDisable(true);
+        
+        
+
+    }
 }
 
